@@ -1,24 +1,24 @@
 import streamlit as st
 import pandas as pd
-import xgboost as xgb
+import joblib
+
 @st.cache_data
 def load_data(path, rows=None):
     return pd.read_csv(path, nrows=rows)
 
 st.title("🔍 Transaction Explorer")
 
-# Load model
-model = xgb.XGBClassifier()
-model.load_model("dashboard/model.pkl")
+# Load model (keep joblib)
+model = joblib.load("dashboard/model.pkl")
 
-# Load processed data (NO isFraud inside this file)
+# Load processed data
 processed = pd.read_csv("dashboard/processed_test.csv", nrows=1000)
 
-# Load raw data (used ONLY for display + Fraud filter)
+# Load raw data
 raw = pd.read_csv("train_transaction.csv", nrows=1000)
 
 # Keep mapping
-raw["row_index"] = raw.index  # align with processed
+raw["row_index"] = raw.index
 
 # Sidebar filter
 fraud_filter = st.sidebar.selectbox(
@@ -54,9 +54,10 @@ if st.button("Predict Risk"):
     else:
         row_idx = match["row_index"].values[0]
 
-        # Use processed row WITHOUT trying to drop isFraud
         X = processed.iloc[[row_idx]]
 
-        prob = model.predict_proba(X)[0][1]
-
-        st.success(f"Fraud Risk Score: {prob:.2%}")
+        try:
+            prob = model.predict_proba(X)[0][1]
+            st.success(f"Fraud Risk Score: {prob:.2%}")
+        except Exception as e:
+            st.error(f"Prediction error: {e}")
