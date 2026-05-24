@@ -14,7 +14,7 @@ model = joblib.load("dashboard/model.pkl")
 raw = pd.read_csv("train_transaction.csv", nrows=1000)
 
 # Load raw data (used ONLY for display + Fraud filter)
-raw = pd.read_csv("train_transaction.csv").head(1000)
+raw = pd.read_csv("train_transaction.csv", nrows=1000)
 
 # Keep mapping
 raw["row_index"] = raw.index  # align with processed
