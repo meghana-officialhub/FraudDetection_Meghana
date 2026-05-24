@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import joblib
 import shap
+@st.cache_data
+def load_data(path, rows=None):
+    return pd.read_csv(path, nrows=rows)
 
 st.title("🔍 SHAP Explanation Engine")
 
@@ -11,7 +14,7 @@ explainer = shap.TreeExplainer(model)
 feature_names = model.feature_names_in_
 
 # Load processed test data
-df = pd.read_csv("dashboard/processed_test.csv")
+df = pd.read_csv("dashboard/processed_test.csv", nrows=5000)
 
 # ---------------------------
 # 🌟 SIDEBAR FILTERS

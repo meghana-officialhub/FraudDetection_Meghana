@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import joblib
+@st.cache_data
+def load_data(path, rows=None):
+    return pd.read_csv(path, nrows=rows)
 
 st.title("🔍 Transaction Explorer")
 
@@ -8,7 +11,7 @@ st.title("🔍 Transaction Explorer")
 model = joblib.load("dashboard/model.pkl")
 
 # Load processed data (NO isFraud inside this file)
-processed = pd.read_csv("dashboard/processed_test.csv").head(1000)
+raw = pd.read_csv("train_transaction.csv", nrows=1000)
 
 # Load raw data (used ONLY for display + Fraud filter)
 raw = pd.read_csv("train_transaction.csv").head(1000)

@@ -1,10 +1,13 @@
 import streamlit as st
 import pandas as pd
+@st.cache_data
+def load_data(path, rows=None):
+    return pd.read_csv(path, nrows=rows)
 
 st.title("📊 Overview")
 
 # Load RAW data
-df = pd.read_csv("train_transaction.csv")
+df = pd.read_csv("train_transaction.csv", nrows=50000)
 
 # Metrics
 total_transactions = len(df)
