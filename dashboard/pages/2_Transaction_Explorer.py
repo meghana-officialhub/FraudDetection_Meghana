@@ -11,7 +11,7 @@ st.title("🔍 Transaction Explorer")
 model = joblib.load("dashboard/model.pkl")
 
 # Load processed data (NO isFraud inside this file)
-raw = pd.read_csv("train_transaction.csv", nrows=1000)
+processed = pd.read_csv("dashboard/processed_test.csv", nrows=1000)
 
 # Load raw data (used ONLY for display + Fraud filter)
 raw = pd.read_csv("train_transaction.csv", nrows=1000)
