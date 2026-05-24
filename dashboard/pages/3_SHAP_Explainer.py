@@ -7,9 +7,8 @@ st.title("🔍 SHAP Explanation Engine")
 
 # Load model + explainer
 model = joblib.load("dashboard/model.pkl")
-explainer_data = joblib.load("dashboard/explainer.pkl")
-explainer = explainer_data["explainer"]
-feature_names = explainer_data["feature_names"]
+explainer = shap.TreeExplainer(model)
+feature_names = model.feature_names_in_
 
 # Load processed test data
 df = pd.read_csv("dashboard/processed_test.csv")
