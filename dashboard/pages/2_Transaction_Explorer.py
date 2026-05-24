@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import joblib
+import xgboost as xgb
 @st.cache_data
 def load_data(path, rows=None):
     return pd.read_csv(path, nrows=rows)
@@ -8,7 +8,8 @@ def load_data(path, rows=None):
 st.title("🔍 Transaction Explorer")
 
 # Load model
-model = joblib.load("dashboard/model.pkl")
+model = xgb.XGBClassifier()
+model.load_model("dashboard/model.pkl")
 
 # Load processed data (NO isFraud inside this file)
 processed = pd.read_csv("dashboard/processed_test.csv", nrows=1000)
